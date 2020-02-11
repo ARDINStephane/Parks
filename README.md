@@ -8,3 +8,4 @@
     - `php bin/console doctrine:database:create`
     - `php bin/console doctrine:migrations:migrate`
     - `php bin/phpunit`
+5. Jouez les fixtures : `php bin/console d:f:l --no-interaction`

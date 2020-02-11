@@ -53,6 +53,11 @@ class Parking
      */
     private $bookings;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -162,6 +167,18 @@ class Parking
                 $booking->setParking(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }
