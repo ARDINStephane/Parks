@@ -2,12 +2,54 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParkingRepository")
+ * @ApiResource(
+ *     attributes={
+ *      "order"={
+ *          "nom":"ASC"
+ *      }
+ *     },
+ *     itemOperations={
+ *       "get_parking_simple"={
+ *          "method"="GET",
+ *          "path"="/parkings/{id}/simple",
+ *          "normalization_context"={"groups"={"parking:simple"}}
+ *      },
+ *       "get_parking_complete"={
+ *          "method"="GET",
+ *          "path"="/parkings/{id}/complete",
+ *          "normalization_context"={"groups"={"parking:complete"}}
+ *      }
+ *     },
+ *     collectionOperations={
+ *       "get_parking_list_simple"={
+ *          "method"="GET",
+ *          "path"="/parkings/simple",
+ *          "normalization_context"={"groups"={"parking:simple"}}
+ *      },
+ *       "get_parking_list_complete"={
+ *          "method"="GET",
+ *          "path"="/parkings/complete",
+ *          "normalization_context"={"groups"={"parking:complete"}}
+ *      }
+ *     }
+ * )
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *      "nom":"ipartial"
+ *     }
+ * )
  */
 class Parking
 {
@@ -15,41 +57,50 @@ class Parking
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"parking:simple", "parking:complete"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
-    private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @Groups("parking:complete")
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"parking:simple", "parking:complete"})
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups("parking:complete")
      */
     private $codePostal;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("parking:complete")
      */
     private $pays;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("parking:complete")
      */
     private $latidude;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("parking:complete")
      */
     private $longitude;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="parking", orphanRemoval=true)
+     * @ApiSubresource()
+     * @Groups("parking:complete")
      */
     private $bookings;
 

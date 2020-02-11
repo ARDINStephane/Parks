@@ -9,3 +9,12 @@
     - `php bin/console doctrine:migrations:migrate`
     - `php bin/phpunit`
 5. Jouez les fixtures : `php bin/console d:f:l --no-interaction`
+
+# Back Office
+    - <domain>/admin
+ 
+# Api
+    - documentation: <domain>/api
+    - recherche d'un parking: GET <domain>/api/parkings/simple?nom= 
+    - recherche d'un des booking libres: GET <domain>api/parkings/<id>/bookings?dateFin[strictly_before]=now&page=1 
+ 

@@ -13,7 +13,7 @@ class ApiControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/');
+        $client->request('GET', '/api');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 }
