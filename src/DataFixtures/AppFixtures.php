@@ -29,6 +29,7 @@ class AppFixtures extends Fixture
                 $booking->setDateDebut($faker->dateTimeBetween('-6 months'))
                     ->setDateFin($faker->dateTimeBetween('now','6 months'))
                     ->setUtilisateurEmail($faker->email)
+                    ->setNumero($c)
                     ->setParking($parking);
 
                 $manager->persist($booking);

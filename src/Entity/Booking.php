@@ -37,6 +37,11 @@ class Booking
      */
     private $parking;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numero;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,23 @@ class Booking
     public function setParking(?Parking $parking): self
     {
         $this->parking = $parking;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getParking()->getNom() . ": " . $this->getNumero();
+    }
+
+    public function getNumero(): ?int
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(int $numero): self
+    {
+        $this->numero = $numero;
 
         return $this;
     }
