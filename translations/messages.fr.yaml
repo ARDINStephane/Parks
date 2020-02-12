@@ -1,0 +1,9 @@
+home: Home
+admin: Admin
+api: API
+login: Connection
+logout: Déconnection
+security:
+  form:
+    username: Nom
+    password: Mot de passe

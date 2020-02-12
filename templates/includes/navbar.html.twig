@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item mx-1">
+                <a class="nav-link"
+                   href={{ path('home') }}>
+                    <i class="fas fa-home">
+                        {{ 'home' | trans }}
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item mx-1">
+                <a class="nav-link"
+                   href={{ path('easyadmin') }}>
+                    <i class="far fa-id-card"></i>
+                    {{ 'admin' | trans }}
+                </a>
+            </li>
+            <li class="nav-item mx-1">
+                <a class="nav-link"
+                   href={{ path('api_entrypoint') }}>
+                    <i class="far fa-id-card"></i>
+                    {{ 'api' | trans }}
+                </a>
+            </li>
+        </ul>
+        <div class="row form-inline my-2 my-lg-0">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="navbar-nav nav-item mx-2">
+                    <a class="nav-link" href={{ path('logout') }}>{{ 'logout' | trans }}</a>
+                </div>
+            {% else %}
+                <div class="navbar-nav nav-item mx-2">
+                    <a class="nav-link" href={{ path('login') }}>{{ 'login' | trans }}</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

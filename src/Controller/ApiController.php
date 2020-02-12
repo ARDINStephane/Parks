@@ -12,9 +12,9 @@ class ApiController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(ParkingRepository $parkingRepository, BookingRepository $bookingRepository)
+    public function index()
     {
-        $test = 'yes';
+        $test = 'yess';
 
         return $this->render('pages/test.html.twig', [
             'test' => $test
