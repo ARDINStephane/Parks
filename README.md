@@ -11,9 +11,13 @@
 5. Jouez les fixtures : `php bin/console d:f:l --no-interaction`
 6. Authentification : 
     - `mkdir config/jwt`
-    - `openssl genrsa -out config/jwt/private.pem -aes256 4096`
-    - `openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem`
+    - `openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096`
+    - `openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout`
     - Dans le fichier .env modifier l'entrée "JWT_PASSPHRASE" avec la pass phrase utilisée pour générer les clefs
+    - Requete d'autentification:
+        * `curl -X POST -H "Content-Type: application/json" http://localhost:8000/api/login_check -d '{"username":"admin","password":"admin"}'`
+        * Ajouter dans les header de toutes les requetes le token reçu: Authorization: Bearer {token} 
+  
 # Back Office
     - <domain>/admin
  
