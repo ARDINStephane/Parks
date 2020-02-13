@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"username", "email"})
  */
 class User implements UserInterface
 {
@@ -19,11 +23,21 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2, max=100)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
      */
     private $password;
 
@@ -36,6 +50,11 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $roles;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +70,24 @@ class User implements UserInterface
     {
         $this->username = $username;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     * @return User
+     */
+    public function setEmail($email): self
+    {
+        $this->email = $email;
         return $this;
     }
 

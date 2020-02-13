@@ -6,12 +6,16 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
  * @ApiResource()
  * @ApiFilter(DateFilter::class, properties={"dateFin"})
+ * @UniqueEntity(fields={"parking", "numero"})
  */
 class Booking
 {
@@ -26,18 +30,25 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Groups("parking:complete")
+     * @Assert\Date
+     * @var string A "Y-m-d H:m:n" formatted value
+     * @Assert\LessThan(propertyPath="dateFin")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups("parking:complete")
+     * @Assert\Date
+     * @var string A "Y-m-d H:m:n" formatted value
+     * @Assert\GreaterThan(propertyPath="dateDebut")
      */
     private $dateFin;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("parking:complete")
+     * @Assert\Email
      */
     private $utilisateurEmail;
 
@@ -45,14 +56,22 @@ class Booking
      * @ORM\ManyToOne(targetEntity="App\Entity\Parking", inversedBy="bookings")
      * @ORM\JoinColumn(nullable=false)
      * @ApiSubresource()
+     * @Assert\NotBlank()
      */
     private $parking;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups("parking:complete")
+     * @Assert\NotBlank()
      */
     private $numero;
+
+    public function __construct()
+    {
+        $this->dateDebut =  new \DateTime();
+        $this->dateFin =  new \DateTime();
+    }
 
     public function getId(): ?int
     {
