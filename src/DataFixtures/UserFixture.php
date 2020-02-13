@@ -24,12 +24,11 @@ class UserFixture extends Fixture
         $user = new User();
         $user->setUsername('toto')
             ->setPassword($this->encoder->encodePassword($user, 'toto'))
-            ->setRoles(['ROLE_USER'])
             ->setEmail('toto@toto.fr');
         $user1 = new User();
         $user1->setUsername('admin')
             ->setPassword($this->encoder->encodePassword($user, 'admin'))
-            ->setRoles(['ROLE_ADMIN'])
+            ->setRoles([User::ROLE_ADMIN])
             ->setEmail('admin@admin.fr')
         ;
 

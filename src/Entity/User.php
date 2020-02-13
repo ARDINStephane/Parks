@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_USER = "ROLE_USER";
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -54,6 +56,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->setRoles([self::ROLE_USER]);
     }
 
     public function getId(): ?int
