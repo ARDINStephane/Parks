@@ -1,0 +1,13 @@
+App\Entity\User:
+  user_user:
+    username: toto
+    roles: ["ROLE_USER"]
+    password: \$argon2id\$v=19\$m=65536,t=4,p=1\$ZStxgNN1FKkCHB7vBGQ2ig\$aZmnIy8Na+mZcbtvF15iKwvk82FSgIw/opqTMrfuM0M"
+    email: "toto@toto.fr"
+    createdAt: null
+  user_admin:
+    username: admin
+    roles: ["ROLE_ADMIN"]
+    password: \$argon2id\$v=19\$m=65536,t=4,p=1\$lUz5EYBhicNbJtn6vb3kLQ\$DC0YxJYBrPRvNKIn7IbzTqs6xxoeUvNFsK4Ngjfz9hs
+    email: admin@admin.fr
+    createdAt: null
