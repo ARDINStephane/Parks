@@ -40,13 +40,15 @@ class SecurityControllerTest extends WebTestCase
     public function testSuccessfulLogin()
     {
         $client = static::createClient();
-        $this->loadFixtureFiles([__DIR__ . '/users.yaml']);
+        $this->loadFixtureFiles([__DIR__ . '/fixtures.yaml']);
         $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('authenticate');
         $client->request('POST', '/login', [
             '_csrf_token' => $csrfToken,
-            '_username' => 'toto',
-            '_password' => 'toto'
+            '_username' => 'admin',
+            '_password' => 'admin'
         ]);
-        $this->assertResponseStatusCodeSame(302);
+        $this->assertTrue(
+            $client->getResponse()->isRedirect('http://localhost/')
+        );
     }
 }

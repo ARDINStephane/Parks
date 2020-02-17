@@ -27,8 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *       "put"={
  *          "method"="PUT",
  *          "path"="/bookings/{id}",
- *          "access_control"="is_granted('ROLE_USER')",
- *          "access_control_message"="Vous n'avez pas les droits pour accéder à cette ressource"
+ *          "security"="is_granted('ROLE_USER')",
+ *          "security_message"="Vous n'avez pas les droits pour accéder à cette ressource"
  *      }
  *     },
  *     collectionOperations={
@@ -40,8 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *       "post"={
  *          "method"="POST",
  *          "path"="/bookings",
- *          "access_control"="is_granted('ROLE_USER')",
- *          "access_control_message"="Vous n'avez pas les droits pour accéder à cette ressource",
+ *          "security"="is_granted('ROLE_USER')",
+ *          "security_message"="Vous n'avez pas les droits pour accéder à cette ressource",
  *          "denormalization_context"={"groups"={"get_role_admin"}}
  *      }
  *     }
