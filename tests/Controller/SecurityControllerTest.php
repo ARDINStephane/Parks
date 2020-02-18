@@ -40,7 +40,7 @@ class SecurityControllerTest extends WebTestCase
     public function testSuccessfulLogin()
     {
         $client = static::createClient();
-        $this->loadFixtureFiles([__DIR__ . '/fixtures.yaml']);
+        $this->loadFixtureFiles([__DIR__ . '/../fixtures.yaml']);
         $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('authenticate');
         $client->request('POST', '/login', [
             '_csrf_token' => $csrfToken,

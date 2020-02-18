@@ -19,7 +19,7 @@ class ApiControllerTest extends WebTestCase
         $this->client = static::createClient();
         parent::setup();
         $this->fixtures = $this->loadFixtureFiles([
-            __DIR__ . '/fixtures.yaml',
+            __DIR__ . '/../fixtures.yaml',
         ]);
     }
 
@@ -153,7 +153,7 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider getBookingsForTests
+     * @dataProvider getUsersFixtureType
      * @param string $userFixtureType
      */
     public function testPutBooking(string $userFixtureType)
@@ -218,6 +218,89 @@ class ApiControllerTest extends WebTestCase
             ['user_user'],
             ['user_admin'],
             ['user_other'],
+        ];
+    }
+
+    public function getBookingsForTests(): array
+    {
+        $this->fixtures = $this->loadFixtureFiles([
+            __DIR__ . '/fixtures.yaml',
+        ]);
+        $parkingId = $this->fixtures['parking_1']->getId();
+
+        return [
+            [
+                'user_admin',
+                $parkingId,
+                '{
+                    "dateDebut": "2019-12-03T08:27:29+01:00",
+                    "dateFin": "2020-01-13T14:10:59+01:00",
+                    "utilisateurEmail": "flegejndre@guyon.com",
+                    "parking": "/api/parkings/'. $parkingId . '/simple",
+                    "numero": 10004
+                }',
+            ],
+            [
+                'user_user',
+                $parkingId,
+                '{
+                    "dateDebut": "2019-12-03T08:27:29+01:00",
+                    "dateFin": "2020-01-13T14:10:59+01:00",
+                    "utilisateurEmail": "flegejndre@guyon.com",
+                    "parking": "/api/parkings/'. $parkingId . '/simple",
+                    "numero": 10004
+                }',
+            ],
+            /*[
+                false,
+                '{
+                    "dateFin": "2020-01-13T14:10:59+01:00",
+                    "utilisateurEmail": "flegejndre@guyon.com",
+                    "parking": "/api/parkings/'. $parkingId . '/simple",
+                    "numero": 10004
+                }',
+                "========> dateDebut manquant"
+            ],
+            [
+                false,
+                '{
+                    "dateDebut": "2019-12-03T08:27:29+01:00",
+                    "utilisateurEmail": "flegejndre@guyon.com",
+                    "parking": "/api/parkings/'. $parkingId . '/simple",
+                    "numero": 10004
+                }',
+                "========> dateFin manquant"
+            ],
+            [
+                false,
+                '{
+                    "dateDebut": "2019-12-03T08:27:29+01:00",
+                    "dateFin": "2020-01-13T14:10:59+01:00",
+                    "parking": "/api/parkings/'. $parkingId . '/simple",
+                    "numero": 10004
+                }',
+                "========> utilisateurEmail manquant"
+            ],
+            [
+                false,
+                '{
+                    "dateDebut": "2019-12-03T08:27:29+01:00",
+                    "dateFin": "2020-01-13T14:10:59+01:00",
+                    "utilisateurEmail": "flegejndre@guyon.com",
+                    "numero": 10004
+                }',
+                "========> parking manquant"
+            ],
+            [
+                false,
+                '{
+                    "dateDebut": "2019-12-03T08:27:29+01:00",
+                    "dateFin": "2020-01-13T14:10:59+01:00",
+                    "utilisateurEmail": "flegejndre@guyon.com",
+                    "parking": "/api/parkings/'. $parkingId . '/simple",
+                }',
+                "========> numero manquant"
+            ],*/
         ];
     }
 }

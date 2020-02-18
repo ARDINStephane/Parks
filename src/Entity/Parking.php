@@ -67,46 +67,43 @@ class Parking
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("parking:complete")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
+     * @Assert\Length(min=2, allowEmptyString=false)
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"parking:simple", "parking:complete"})
-     * @Assert\NotBlank()
-     * @Assert\Regex("/^[0-9]{5}$/")
+     * @Assert\Length(min=2, allowEmptyString=false)
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("parking:complete")
+     * @Assert\Regex("/^(\d{4,5}|\d{2} \d{3})$/")
+     * @Assert\NotBlank()
      */
     private $codePostal;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("parking:complete")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2, max=100)
+     * @Assert\Length(min=2, max=100, allowEmptyString=false)
      */
     private $pays;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("parking:complete")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
+     * @Assert\Length(min=2, allowEmptyString=false)
      */
     private $latidude;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("parking:complete")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
+     * @Assert\Length(min=2, allowEmptyString=false)
      */
     private $longitude;
 
@@ -114,14 +111,14 @@ class Parking
      * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="parking", orphanRemoval=true)
      * @ApiSubresource()
      * @Groups("parking:complete")
-     * @Assert\NotBlank()
+     * @Assert\Valid()
+     * @Assert\Count(min="1")
      */
     private $bookings;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2, max=100)
+     * @Assert\Length(min=2, max=100, allowEmptyString=false)
      */
     private $ville;
 
@@ -234,6 +231,13 @@ class Parking
                 $booking->setParking(null);
             }
         }
+
+        return $this;
+    }
+
+    public function emptyBookings(): self
+    {
+        $this->bookings = [];
 
         return $this;
     }
