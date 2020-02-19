@@ -62,14 +62,12 @@ class Booking
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"parking:complete", "get_role_admin", "get_role_user"})
-     * @Assert\Date
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"parking:complete", "get_role_admin","get_role_user"})
-     * @Assert\Date
      * @Assert\GreaterThan(propertyPath="dateDebut")
      */
     private $dateFin;

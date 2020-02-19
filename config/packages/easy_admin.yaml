@@ -3,4 +3,3 @@ easy_admin:
 #List the entity class name you want to manage
         - App\Entity\Parking
         - App\Entity\Booking
-        - App\Entity\User
