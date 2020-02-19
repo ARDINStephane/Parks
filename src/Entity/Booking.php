@@ -60,19 +60,16 @@ class Booking
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"parking:complete", "get_role_admin", "get_role_user"})
      * @Assert\Date
-     * @var string A "Y-m-d H:m:n" formatted value
-     * @Assert\LessThan(propertyPath="dateFin")
      */
     private $dateDebut;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"parking:complete", "get_role_admin","get_role_user"})
      * @Assert\Date
-     * @var string A "Y-m-d H:m:n" formatted value
      * @Assert\GreaterThan(propertyPath="dateDebut")
      */
     private $dateFin;
@@ -81,6 +78,7 @@ class Booking
      * @ORM\Column(type="string", length=255)
      * @Groups({"parking:complete", "get_role_admin"})
      * @Assert\Email
+     * @Assert\NotBlank()
      */
     private $utilisateurEmail;
 
@@ -89,20 +87,17 @@ class Booking
      * @ORM\JoinColumn(nullable=false)
      * @ApiSubresource()
      * @Groups({"get_role_admin"})
+     * @Assert\Valid()
+     * @Assert\NotBlank()
      */
     private $parking;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      * @Groups({"parking:complete", "get_role_admin"})
+     * @Assert\NotBlank()
      */
     private $numero;
-
-    public function __construct()
-    {
-        $this->dateDebut =  new \DateTime();
-        $this->dateFin =  new \DateTime();
-    }
 
     public function getId(): ?int
     {
@@ -114,7 +109,7 @@ class Booking
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeInterface $dateDebut): self
+    public function setDateDebut(?\DateTimeInterface $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
 
@@ -126,7 +121,7 @@ class Booking
         return $this->dateFin;
     }
 
-    public function setDateFin(\DateTimeInterface $dateFin): self
+    public function setDateFin(?\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
 
@@ -161,12 +156,12 @@ class Booking
         return $this->getParking()->getNom() . ": " . $this->getNumero();
     }
 
-    public function getNumero(): ?int
+    public function getNumero(): ?string
     {
         return $this->numero;
     }
 
-    public function setNumero(int $numero): self
+    public function setNumero(string $numero): self
     {
         $this->numero = $numero;
 

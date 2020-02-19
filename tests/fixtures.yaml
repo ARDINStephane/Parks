@@ -28,6 +28,14 @@ App\Entity\Parking:
     longitude: 444444
     bookings: ['@booking_1']
     ville: Lyon
+  parking_2:
+    adresse: 13 rue de la liberation
+    nom: titi
+    codePostal: 91630
+    pays: France
+    latidude: 333333
+    longitude: 444444
+    ville: Lyon
 
 App\Entity\Booking:
   booking_1:

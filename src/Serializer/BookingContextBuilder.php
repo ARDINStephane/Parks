@@ -23,10 +23,16 @@ final class BookingContextBuilder implements SerializerContextBuilderInterface
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $resourceClass = $context['resource_class'] ?? null;
 
-        if ($resourceClass === Booking::class && $this->authorizationChecker->isGranted('ROLE_ADMIN') && ($request->getMethod() == "PUT")) {
+        if ($resourceClass === Booking::class
+            && $this->authorizationChecker->isGranted('ROLE_ADMIN')
+            && ($request->getMethod() == "PUT")) {
             if($normalization === false) {
                 $context['groups'][] = 'get_role_admin';
             }
+        } elseif ($resourceClass === Booking::class
+            && ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $this->authorizationChecker->isGranted('ROLE_USER'))
+            && ($request->getMethod() == "POST")) {
+                $context['groups'][] = 'get_role_admin';
         } else {
             $context['groups'][] = 'get_role_user';
         }

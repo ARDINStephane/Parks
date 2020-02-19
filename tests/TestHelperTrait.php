@@ -10,10 +10,15 @@ use Symfony\Component\Validator\ConstraintViolation;
 
 trait TestHelperTrait
 {
-    public function assertHasErrors(Parking $parking, int $number = 0)
+    public function validateEntity($entity):void
+    {
+        $this->assertHasErrors($entity, 0);
+    }
+
+    public function assertHasErrors($entity, int $number = 0):void
     {
         self::bootKernel();
-        $errors = self::$container->get('validator')->validate($parking);
+        $errors = self::$container->get('validator')->validate($entity);
         $messages = [];
         /** @var ConstraintViolation $error */
         foreach($errors as $error) {
@@ -22,64 +27,84 @@ trait TestHelperTrait
         $this->assertCount($number, $errors, implode(', ', $messages));
     }
 
-    public function uniqEntityValidation(array $properties)
+    public function uniqEntityValidation(array $properties):void
     {
         $errors = 0;
-        $parking = $this->getEntity();
+        $entity = $this->getEntity();
         foreach($properties as $property => $content) {
             $property = 'set' . $property;
-            $parking->{$property}($content);
+            $entity->{$property}($content);
             $errors++;
         }
 
-        $this->assertHasErrors($parking, $errors);
+        $this->assertHasErrors($entity, $errors);
     }
 
-    public function notBlankProperties(array $properties)
+    public function notBlankProperties(array $properties):void
     {
         foreach ($properties as $property){
             $property = 'set' . $property;
-            $parking = $this->getEntity()->{$property}('');
+            $entity = $this->getEntity()->{$property}('');
 
-            $this->assertHasErrors($parking, 1);
+            $this->assertHasErrors($entity, 1);
         }
     }
 
-    public function PropertiesCodePostalValidation(array $properties, string $postalCode)
+    public function PropertiesCodePostalValidation(array $properties, string $codePostal, $expected):void
     {
         foreach ($properties as $property){
             $property = 'set' . $property;
-            $parking = $this->getEntity()->{$property}($postalCode);
+            $entity = $this->getEntity()->{$property}($codePostal);
 
-            $this->assertHasErrors($parking, 1);
+            $this->assertHasErrors($entity, $expected);
         }
     }
 
-
-    public function PropertiesLengthValidation(array $properties)
+    public function PropertiesLengthValidation(array $properties):void
     {
         $faker = Factory::create('fr_FR');
 
         foreach ($properties as $property => $options){
             $property = 'set' . $property;
             if(isset($options["min"])) {
-                $parking = $this->getEntity()->{$property}($faker->lexify(str_repeat('?', $options["min"] - 1)));
-                $this->assertHasErrors($parking, 1);
+                $entity = $this->getEntity()->{$property}($faker->lexify(str_repeat('?', $options["min"] - 1)));
+                $this->assertHasErrors($entity, 1);
             }
             if(isset($options["max"])) {
-                $parking = $this->getEntity()->{$property}($faker->lexify(str_repeat('?', $options["max"] + 1)));
-                $this->assertHasErrors($parking, 1);
+                $entity = $this->getEntity()->{$property}($faker->lexify(str_repeat('?', $options["max"] + 1)));
+                $this->assertHasErrors($entity, 1);
             }
         }
     }
 
-    public function notBlankRelationships(array $relationships)
+    public function notBlankRelationships(array $relationships):void
     {
         foreach ($relationships as $relationship){
             $relationship = 'empty' . $relationship;
-            $parking = $this->getEntity()->{$relationship}();
+            $entity = $this->getEntity()->{$relationship}();
 
-            $this->assertHasErrors($parking, 1);
+            $this->assertHasErrors($entity, 1);
+        }
+    }
+
+    public function notBlankRelationshipsSideOne(array $relationships):void
+    {
+        foreach ($relationships as $relationship) {
+            $relationship = 'set' . $relationship;
+            $entity = $this->getEntity()->{$relationship}(null);
+
+            $this->assertHasErrors($entity, 1);
+        }
+
+    }
+
+    public function EmailValidation(array $properties, string $email, $expected):void
+    {
+        foreach ($properties as $property){
+            $property = 'set' . $property;
+            $entity = $this->getEntity()->{$property}($email);
+
+            $this->assertHasErrors($entity, $expected);
         }
     }
 }
