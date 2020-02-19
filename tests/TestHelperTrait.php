@@ -29,15 +29,12 @@ trait TestHelperTrait
 
     public function uniqEntityValidation(array $properties):void
     {
-        $errors = 0;
         $entity = $this->getEntity();
         foreach($properties as $property => $content) {
             $property = 'set' . $property;
             $entity->{$property}($content);
-            $errors++;
         }
-
-        $this->assertHasErrors($entity, $errors);
+        $this->assertHasErrors($entity, 1);
     }
 
     public function notBlankProperties(array $properties):void
